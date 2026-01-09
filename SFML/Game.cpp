@@ -122,7 +122,8 @@ void Game::render()
 	{
 		p.render(*this->window);
 	}
-	//this->player->render(*this->window);
+
+	this->player.render(*this->window);
 	//this->patient->render(*this->window);
 	//this->window->draw(this->pat);
 
