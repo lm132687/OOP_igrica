@@ -22,6 +22,12 @@ void Game::initPatients()
 	patients.emplace_back(10.f, 10.f);
 }
 
+void Game::initMenu()
+{
+	this->menuTexture.loadFromFile("menu/menu_1simptom.png");
+	this->menuSprite.setTexture(this->menuTexture);
+}
+
 void Game::initBackground()
 {
 	this->backgroundTexture.loadFromFile("Background/hospital.png");
@@ -66,6 +72,18 @@ void Game::pollEvents()
 		if (this->ev.type == sf::Event::KeyPressed &&
 			this->ev.key.code == sf::Keyboard::Escape)
 			this->window->close();
+
+		if (this->ev.key.code == sf::Keyboard::E)
+		{
+			if (!menuOpen)
+			{
+				this->initMenu();
+				menuOpen = true;
+			}
+			else {
+				menuOpen = false;
+			}
+		}
 	}
 }
 
@@ -94,12 +112,16 @@ void Game::render()
 	//backgroud draw
 
 	this->window->draw(this->backgroundSprite);
+	//popravi
+	if (menuOpen)
+	{
+		this->window->draw(this->menuSprite);
+	}
 	//Ovdje cemo crtati
 	for (auto& p : this->patients)
 	{
 		p.render(*this->window);
 	}
-
 	//this->player->render(*this->window);
 	//this->patient->render(*this->window);
 	//this->window->draw(this->pat);

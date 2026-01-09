@@ -9,6 +9,7 @@ private:
 
 	sf::Vector2f position;
 	bool clicking;
+
 public:
 	Player();
 

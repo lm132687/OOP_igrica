@@ -36,10 +36,16 @@ private:
 	vector<Patient> patients;
 	Player player;
 
+	//player menu(magazin)
+	sf::Sprite menuSprite;
+	sf::Texture menuTexture;
+	bool menuOpen = false;
+
 	void initVariables();
 	void initWindow();
 	void initBackground();
 	void initPatients();
+	void initMenu();
 public:
 	Game();
 	virtual ~Game();

@@ -2,7 +2,7 @@
 
 Player::Player()
 {
-	this->playerTexture.loadFromFile("Player/player.jpg");
+	this->playerTexture.loadFromFile("Player/player.png");
 	this->playerSprite.setTexture(this->playerTexture);
 	this->playerSprite.setScale(10.f, 10.f);
 
@@ -19,6 +19,7 @@ void Player::update(const sf::RenderWindow& window)
 	this->playerSprite.setPosition(this->position);
 
 	this->clicking = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+
 }
 
 void Player::render(sf::RenderTarget& target)
