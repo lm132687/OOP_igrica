@@ -54,6 +54,7 @@ public:
 
 	void updateMousePos();
 	void pollEvents();
+	void emotions();
 	void update();
 	void render();
 };

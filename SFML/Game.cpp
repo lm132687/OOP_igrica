@@ -73,18 +73,25 @@ void Game::pollEvents()
 			this->ev.key.code == sf::Keyboard::Escape)
 			this->window->close();
 
-		if (this->ev.key.code == sf::Keyboard::E)
+		if (this->ev.type==sf::Event::KeyPressed && this->ev.key.code == sf::Keyboard::E)
 		{
 			if (!menuOpen)
 			{
 				this->initMenu();
+				player.player_menu();
 				menuOpen = true;
 			}
 			else {
+				player.player_normal();
 				menuOpen = false;
 			}
 		}
 	}
+}
+
+void Game::emotions()
+{
+	
 }
 
 void Game::update() {
@@ -112,15 +119,16 @@ void Game::render()
 	//backgroud draw
 
 	this->window->draw(this->backgroundSprite);
-	//popravi
-	if (menuOpen)
-	{
-		this->window->draw(this->menuSprite);
-	}
+	
 	//Ovdje cemo crtati
 	for (auto& p : this->patients)
 	{
 		p.render(*this->window);
+	}
+
+	if (menuOpen)
+	{
+		this->window->draw(this->menuSprite);
 	}
 
 	this->player.render(*this->window);
