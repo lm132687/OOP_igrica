@@ -2,7 +2,7 @@
 
 Patient::Patient(float x, float y)
 {
-	this->patientTexture.loadFromFile("Patients/shy_lady.png");
+	this->patientTexture.loadFromFile("Patients/luka.png");
 	this->patientSprite.setTexture(this->patientTexture);
 	this->patientSprite.setPosition(10.f, 10.f);
 	this->patientSprite.setScale(800.f / patientTexture.getSize().x,
