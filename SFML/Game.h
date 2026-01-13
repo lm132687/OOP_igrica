@@ -10,6 +10,8 @@
 
 #include "Patient.h"
 #include "Player.h"
+//#include "TextBox.h"
+//#include "Text.h"
 
 using namespace std;
 
@@ -41,11 +43,17 @@ private:
 	sf::Texture menuTexture;
 	bool menuOpen = false;
 
+	/*textbox, text, font
+	sf::Font font;
+	TextBox* textbox;
+	Text* text;*/
+
 	void initVariables();
 	void initWindow();
 	void initBackground();
 	void initPatients();
 	void initMenu();
+	void initTextBox();
 public:
 	Game();
 	virtual ~Game();
@@ -54,7 +62,6 @@ public:
 
 	void updateMousePos();
 	void pollEvents();
-	void emotions();
 	void update();
 	void render();
 };
