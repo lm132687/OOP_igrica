@@ -10,8 +10,8 @@
 
 #include "Patient.h"
 #include "Player.h"
-//#include "TextBox.h"
-//#include "Text.h"
+#include "TextBox.h"
+#include "Text.h"
 
 using namespace std;
 
@@ -43,10 +43,10 @@ private:
 	sf::Texture menuTexture;
 	bool menuOpen = false;
 
-	/*textbox, text, font
+	//textbox, text, font
 	sf::Font font;
 	TextBox* textbox;
-	Text* text;*/
+	Text* text;
 
 	void initVariables();
 	void initWindow();

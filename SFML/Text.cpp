@@ -1,5 +1,5 @@
 #include "Text.h"
-/*
+
 Text::Text(const sf::Font& font, unsigned int size)
 {
 	text.setFont(font);
@@ -26,4 +26,4 @@ void Text::attachTo(const TextBox& box)
 void Text::draw(sf::RenderWindow& window)
 {
 	window.draw(text);
-}*/
+}

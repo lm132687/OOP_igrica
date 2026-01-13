@@ -9,7 +9,7 @@ private:
 public:
 	TextBox();
 
-	void applyScale_textbox();
+	void setSize(const sf::Vector2f& size);
 	sf::FloatRect getBounds() const;
 	void setPosition(const sf::Vector2f& pos);
 	void draw(sf::RenderWindow& window);

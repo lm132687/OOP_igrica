@@ -1,5 +1,5 @@
 #include "TextBox.h"
-/*
+
 TextBox::TextBox()
 {	
 	textboxTexture.loadFromFile("boxes/textbox.png");
@@ -9,45 +9,24 @@ TextBox::TextBox()
 void TextBox::setPosition(const sf::Vector2f& pos)
 {
 	textboxSprite.setPosition(pos);
-	updateLayout();
 }
 
 void TextBox::setSize(const sf::Vector2f& size)
 {
-	boxSize = size;
-
 	sf::Vector2u texSize = textboxSprite.getTexture()->getSize();
 	textboxSprite.setScale(
-		boxSize.x / texSize.x,
-		boxSize.y / texSize.y
-	);
-
-	updateLayout();
-}
-void TextBox::updateLayout()
-{
-	sf::FloatRect bounds = text.getLocalBounds();
-
-	text.setPosition(
-		textboxSprite.getPosition().x + padding - bounds.left,
-		textboxSprite.getPosition().y + padding - bounds.top
+		size.x / texSize.x,
+		size.y / texSize.y
 	);
 }
 
-void TextBox::setBottomRight(const sf::RenderWindow& window, float margin)
+sf::FloatRect TextBox::getBounds() const
 {
-	sf::Vector2u win = window.getSize();
-
-	textboxSprite.setPosition(
-		win.x - boxSize.x - margin,
-		win.y - boxSize.y - margin
-	);
-
-	updateLayout();
+	return sf::FloatRect();
 }
 
 void TextBox::draw(sf::RenderWindow& window)
 {
 	window.draw(textboxSprite);
-	window.draw(text);
-}*/
+}
+

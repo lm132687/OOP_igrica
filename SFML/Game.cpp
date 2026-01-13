@@ -3,8 +3,8 @@
 void Game::initVariables()
 {
 	this->window = nullptr; //za inicjalizirat 
-	//this->textbox = nullptr;
-	//this->text = nullptr;
+	this->textbox = nullptr;
+	this->text = nullptr;
 }
 
 void Game::initWindow()
@@ -32,15 +32,13 @@ void Game::initMenu()
 
 void Game::initTextBox()
 {
-	/*
 	this->font.loadFromFile("Fonts/mockclays_regular.ttf");
 
 	this->textbox = new TextBox();
-	this->textbox->applyScale_textbox();
 	this->textbox->setPosition({ 20.f,20.f });
 	this->text = new Text(this->font, 22);
 	this->text->setText("Bla bla");
-	this->text->attachTo(*this->textbox);*/
+	this->text->attachTo(*this->textbox);
 }
 
 void Game::initBackground()
@@ -60,8 +58,8 @@ Game::Game()
 }
 
 Game::~Game() {
-	//delete this->text;
-	//delete this->textbox;
+	delete this->text;
+	delete this->textbox;
 	delete this->window;
 }
 
@@ -143,8 +141,8 @@ void Game::render()
 	{
 		this->window->draw(this->menuSprite);
 	}
-	//this->textbox->draw(*this->window);
-	//this->text->draw(*this->window);
+	this->textbox->draw(*this->window);
+	this->text->draw(*this->window);
 	this->player.render(*this->window);
 	//this->patient->render(*this->window);
 	//this->window->draw(this->pat);
