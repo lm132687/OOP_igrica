@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "TextBox.h"
 #include "Text.h"
+#include "Mouse.h"
 
 using namespace std;
 
@@ -31,8 +32,9 @@ private:
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
 
-	//Mouse pozicija
-	sf::Vector2i mousePosWindow;
+	//Mouse pozicija, click
+	Mouse mouse;
+
 
 	//Game objects
 	vector<Patient> patients;
@@ -48,12 +50,20 @@ private:
 	TextBox* textbox;
 	Text* text;
 
+	//kad pricaju
+	bool isPatient_talking = false;
+	bool isPlayer_talking = false;
+	string player_talking;
+	string patients_talking;
+
 	void initVariables();
 	void initWindow();
 	void initBackground();
 	void initPatients();
 	void initMenu();
 	void initTextBox();
+	bool isTalking();
+	void initTalking();
 public:
 	Game();
 	virtual ~Game();

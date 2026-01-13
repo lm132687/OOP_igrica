@@ -12,6 +12,15 @@ void Text::setText(const sf::String& str)
 	text.setString(str);
 }
 
+void Text::setPosition(const sf::Vector2f& pos)
+{
+	text.setPosition(pos);
+}
+
+void Text::Talking() {
+	
+}
+
 void Text::attachTo(const TextBox& box)
 {
 	auto bounds = box.getBounds();

@@ -10,7 +10,7 @@ Player::Player()
 
 	this->playerSprite.setTexture(this->normalTexture);
 
-	this->playerSprite.setScale(10.f, 10.f);
+	//this->playerSprite.setScale(10.f, 10.f);
 	this->position = sf::Vector2f(10.f, 70.f);
 	
 	this->playerSprite.setScale(

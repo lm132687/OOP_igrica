@@ -35,10 +35,27 @@ void Game::initTextBox()
 	this->font.loadFromFile("Fonts/mockclays_regular.ttf");
 
 	this->textbox = new TextBox();
-	this->textbox->setPosition({ 20.f,20.f });
+	this->textbox->setPosition({ 187.f, 422.f });
 	this->text = new Text(this->font, 22);
 	this->text->setText("Bla bla");
-	this->text->attachTo(*this->textbox);
+	this->text->setPosition({ 240.f, 445.f });
+}
+
+bool Game::isTalking()
+{
+	this->mouse.update(*this->window);
+	if (mouse.isLeftClicked())
+	{
+		for (auto& patient : this->patients)
+		{
+			if (patient.getBounds().contains(static_cast<sf::Vector2f>(mouse.getMousePos())))
+			{
+				patient.patient_talking();
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void Game::initBackground()
@@ -73,7 +90,10 @@ void Game::updateMousePos()
 	/* 
 		Update-a mouse poziciju, prati poziciju misa samo unutar window-a (Vector2i)
 	*/
-	this->mousePosWindow = sf::Mouse::getPosition(*this->window);//refrence
+	//refrence
+	//provjerit mouose poziciju jel iznad patienta i ako je u poll events provjerit is button pressed 
+	//da pokrene razgovor (inittalking())
+	
 }
 
 void Game::pollEvents()
@@ -115,6 +135,32 @@ void Game::update() {
 		p.update();
 	}
 
+	/*
+	this->mouse.update(*this->window);
+	if (mouse.isLeftClicked())
+	{
+		for (auto& patient : this->patients)
+		{
+			if (patient.getBounds().contains(static_cast<sf::Vector2f>(mouse.getMousePos())))
+			{
+				patient.patient_talking();
+			}
+		}
+	}
+	
+	if (mouse.isLeftClicked())
+	{
+		sf::Vector2i mouseposs = sf::Mouse::getPosition(*this->window);
+		sf::Vector2f mousee = (*this->window).mapPixelToCoords(mouseposs);
+		for(auto& patient : this->patients)
+		{
+			if (patient.getBounds().contains(mousee))
+			{
+				patient.patient_talking();
+			}
+		}
+	}
+	*/
 	this->updateMousePos();
 }
 
