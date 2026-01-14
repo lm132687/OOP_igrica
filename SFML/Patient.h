@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <SFML/Graphics.hpp>
-
+using namespace std;
 class Patient{
 private:
 	sf::Sprite patientSprite;
@@ -8,6 +8,9 @@ private:
 
 	sf::Texture patient_talkingTexture;
 	sf::Sprite patient_talkingSprite;
+
+	vector<string> dialogLines;
+
 public:
 	Patient(float x, float y);
 	
@@ -18,5 +21,7 @@ public:
 	void patient_normal();
 
 	sf::FloatRect getBounds() const;
+
+	const vector<string>& getDialog() const;
 };
 

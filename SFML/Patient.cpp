@@ -9,6 +9,20 @@ Patient::Patient(float x, float y)
 	this->patientSprite.setScale(280.f / patientTexture.getSize().x,
 		584.f / patientTexture.getSize().y);
 
+	dialogLines = {
+		"Luka: Just get it over with.",
+		"Player: What seems to be the problem?",
+		"Luka: Just came in for a check up. But hurry up I have\n things to do.",
+		"Player: Ok...",
+		"Player: What do you want to check?",
+
+		"Aurora: Hi... I need your help...",
+		"Player: What seems to be the problem?",
+		"Aurora: I can't stop coughing...khkh..",
+		"Player: Ok, don't worry I will check  you.",
+		"Player: What do you want to check?",
+	};
+
 
 	//this->patientTexture.setOutlineColor(sf::Color::White);
 	//outline da se bolje vidi posto ce pozadina bit tamnija 
@@ -48,5 +62,10 @@ void Patient::patient_talking()
 sf::FloatRect Patient::getBounds() const
 {
 	return patientSprite.getGlobalBounds();
+}
+
+const vector<string>& Patient::getDialog() const
+{
+	return dialogLines;
 }
 

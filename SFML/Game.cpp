@@ -37,35 +37,35 @@ void Game::initTextBox()
 	this->textbox = new TextBox();
 	this->textbox->setPosition({ 187.f, 422.f });
 	this->text = new Text(this->font, 22);
-	this->text->setText("Bla bla");
 	this->text->setPosition({ 240.f, 445.f });
-}
 
-bool Game::isTalking()
-{
-	this->mouse.update(*this->window);
-	if (mouse.isLeftClicked())
-	{
-		for (auto& patient : this->patients)
-		{
-			if (patient.getBounds().contains(static_cast<sf::Vector2f>(mouse.getMousePos())))
-			{
-				patient.patient_talking();
-				return true;
-			}
-		}
-	}
-	return false;
+	//dan1
+	this->botun1 = new Botun();
+	this->botun1->bite();
+	this->botun1->setPosition({ 310.f, 472.f });
+	//dan1
+	this->botun2 = new Botun();
+	this->botun2->mouth();
+	this->botun2->setPosition({ 480.f, 468.f });
+	/*
+	//dan2
+	this->botun3 = new Botun();
+	this->botun3->body();
+	this->botun3->setPosition({ 310.f, 528.f });
+	//dan3
+	this->botun4 = new Botun();
+	this->botun4->skin();
+	this->botun4->setPosition({ 490.f, 528.f });
+	*/
 }
 
 void Game::initBackground()
 {
 	this->backgroundTexture.loadFromFile("Background/hospital.png");
 	this->backgroundSprite.setTexture(this->backgroundTexture);
-
 }
 
-Game::Game() 
+Game::Game()
 {
 	this->initVariables();
 	this->initWindow();
@@ -129,14 +129,40 @@ void Game::update() {
 	//koristi nam za obradivanje input-a, pamcenje poz misa...
 	this->pollEvents();
 
+	this->mouse.update(*this->window);
+
 	this->player.update(*this->window);
 	for (auto& p : this->patients)
 	{
 		p.update();
 	}
 
-	/*
-	this->mouse.update(*this->window);
+	if (this->dijalog.isActive())
+	{
+		
+		if (mouse.isLeftClicked())
+		{
+			this->dijalog.next();
+
+			if (!this->dijalog.isActive())
+			{
+				this->player.player_normal();
+
+				if (activePatient)
+				{
+					activePatient->patient_normal();
+					activePatient = nullptr;
+				}
+
+				return;
+			}
+		}
+
+		text->setText(this->dijalog.getCurrentDijalog());
+		
+		return;
+	}
+
 	if (mouse.isLeftClicked())
 	{
 		for (auto& patient : this->patients)
@@ -144,10 +170,25 @@ void Game::update() {
 			if (patient.getBounds().contains(static_cast<sf::Vector2f>(mouse.getMousePos())))
 			{
 				patient.patient_talking();
+				this->dijalog.start(patient.getDialog());
+				activePatient = &patient;
+				
+				player.player_talking();
+				patient.patient_talking();
+
+				text->setText(this->dijalog.getCurrentDijalog());
+				if (dijalog.getCurrentDijalog() == "What do you want to check?")
+				{
+					dijalog.enterChoice();
+				}
+				break;
 			}
 		}
 	}
-	
+
+
+
+	/*
 	if (mouse.isLeftClicked())
 	{
 		sf::Vector2i mouseposs = sf::Mouse::getPosition(*this->window);
@@ -161,7 +202,6 @@ void Game::update() {
 		}
 	}
 	*/
-	this->updateMousePos();
 }
 
 void Game::render()
@@ -187,8 +227,20 @@ void Game::render()
 	{
 		this->window->draw(this->menuSprite);
 	}
-	this->textbox->draw(*this->window);
-	this->text->draw(*this->window);
+
+	if (this->dijalog.isActive())
+	{
+		this->textbox->draw(*this->window);
+		this->text->draw(*this->window);
+		if (dijalog.isInChoice())
+		{
+			this->botun1->draw(*this->window);
+			this->botun2->draw(*this->window);
+			//this->botun3->draw(*this->window);
+			//this->botun4->draw(*this->window);
+		}
+	}
+	
 	this->player.render(*this->window);
 	//this->patient->render(*this->window);
 	//this->window->draw(this->pat);

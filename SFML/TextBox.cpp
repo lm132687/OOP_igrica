@@ -29,4 +29,3 @@ void TextBox::draw(sf::RenderWindow& window)
 {
 	window.draw(textboxSprite);
 }
-

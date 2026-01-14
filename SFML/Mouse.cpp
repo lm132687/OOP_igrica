@@ -3,13 +3,18 @@
 Mouse::Mouse()
 {
     this->leftClicked = false;
+    //this->prevClicked = false;
     this->mousePos = sf::Vector2i(0, 0);
 }
 
 void Mouse::update(sf::RenderWindow& window)
 {
+    bool current = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+
+    leftClicked = (!prevClicked && current);
+    prevClicked = current;
+
     this->mousePos = sf::Mouse::getPosition(window);
-    this->leftClicked = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 }
 
 bool Mouse::isLeftClicked() const

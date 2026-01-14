@@ -1,10 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+using namespace std;
 
 class Mouse
 {
 private:
 	bool leftClicked;
+	bool prevClicked;
 	sf::Vector2i mousePos;
 
 public:

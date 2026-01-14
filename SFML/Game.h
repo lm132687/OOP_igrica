@@ -13,9 +13,10 @@
 #include "TextBox.h"
 #include "Text.h"
 #include "Mouse.h"
-
+#include "Dijalog.h"
+#include "Botun.h"
+#include <vector>
 using namespace std;
-
 /*
 Klasa koja se ponasa kao game engine
 */
@@ -35,7 +36,6 @@ private:
 	//Mouse pozicija, click
 	Mouse mouse;
 
-
 	//Game objects
 	vector<Patient> patients;
 	Player player;
@@ -45,16 +45,18 @@ private:
 	sf::Texture menuTexture;
 	bool menuOpen = false;
 
-	//textbox, text, font
+	//textbox, text, font, botun
 	sf::Font font;
 	TextBox* textbox;
 	Text* text;
+	Botun* botun1;
+	Botun* botun2;
+	Botun* botun3;
+	Botun* botun4;
 
 	//kad pricaju
-	bool isPatient_talking = false;
-	bool isPlayer_talking = false;
-	string player_talking;
-	string patients_talking;
+	Dijalog dijalog;
+	Patient* activePatient = nullptr;
 
 	void initVariables();
 	void initWindow();
@@ -62,8 +64,6 @@ private:
 	void initPatients();
 	void initMenu();
 	void initTextBox();
-	bool isTalking();
-	void initTalking();
 public:
 	Game();
 	virtual ~Game();
