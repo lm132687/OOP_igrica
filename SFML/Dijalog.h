@@ -26,6 +26,7 @@ public:
 	void next();
 	void stop();
 	void enterChoice();
+	void leaveChoice();
 	bool isActive()const;
 	bool isInChoice() const;
 	const string& getCurrentDijalog() const;

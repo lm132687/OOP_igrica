@@ -53,6 +53,14 @@ private:
 	Botun* botun2;
 	Botun* botun3;
 	Botun* botun4;
+	
+	//slika s simptomima
+	int activeBox;
+
+	sf::Texture box1Texture;
+	sf::Texture box2Texture;
+	sf::Sprite box1Sprite;
+	sf::Sprite box2Sprite;
 
 	//kad pricaju
 	Dijalog dijalog;
@@ -64,6 +72,7 @@ private:
 	void initPatients();
 	void initMenu();
 	void initTextBox();
+	void initBox();
 public:
 	Game();
 	virtual ~Game();

@@ -45,6 +45,11 @@ void Dijalog::enterChoice()
     state = DialogState::Choice;
 }
 
+void Dijalog::leaveChoice()
+{
+    state = DialogState::Normal;
+}
+
 bool Dijalog::isActive() const
 {
     return active;

@@ -1,10 +1,12 @@
-#include "Game.h"
+﻿#include "Game.h"
 
 void Game::initVariables()
 {
 	this->window = nullptr; //za inicjalizirat 
 	this->textbox = nullptr;
 	this->text = nullptr;
+
+	activeBox = 0;//kad 0 onda je nista, 1 box1, 2 box2
 }
 
 void Game::initWindow()
@@ -59,6 +61,17 @@ void Game::initTextBox()
 	*/
 }
 
+void Game::initBox()
+{
+	this->box1Texture.loadFromFile("boxes/luka_leg.png");
+	this->box1Sprite.setTexture(this->box1Texture);
+	this->box1Sprite.setPosition({ 70.f, 50.f });
+
+	this->box2Texture.loadFromFile("boxes/luka_mouth.png");
+	this->box2Sprite.setTexture(this->box2Texture);
+	this->box2Sprite.setPosition(200.f, 100.f);
+}
+
 void Game::initBackground()
 {
 	this->backgroundTexture.loadFromFile("Background/hospital.png");
@@ -72,6 +85,7 @@ Game::Game()
 	this->initBackground();
 	this->initPatients();
 	this->initTextBox();
+	this->initBox();
 }
 
 Game::~Game() {
@@ -131,22 +145,58 @@ void Game::update() {
 
 	this->mouse.update(*this->window);
 
+	if (activeBox != 0)
+	{
+		if (mouse.isLeftClicked())
+		{
+			activeBox = 0;
+		}
+
+		return;
+	}
+
 	this->player.update(*this->window);
 	for (auto& p : this->patients)
 	{
 		p.update();
 	}
 
-	if (this->dijalog.isActive())
+	if (dijalog.isActive())
 	{
-		
+		//aktivirati chocie na ovoj liniji
+		if (dijalog.getCurrentDijalog() == "Player: What do you want to check?")
+		{
+			dijalog.enterChoice();
+		}
+
+		//choice mode
+		if (dijalog.isInChoice())
+		{
+			if (botun1->isClicked(mouse))
+			{
+				dijalog.leaveChoice();
+				activeBox = 1;;
+				return;
+			}
+			else if (botun2->isClicked(mouse))
+			{
+				dijalog.leaveChoice();
+				activeBox = 2;
+				return;
+			}
+
+			text->setText(dijalog.getCurrentDijalog());
+			return;
+		}
+
+		//normalni dijalog
 		if (mouse.isLeftClicked())
 		{
-			this->dijalog.next();
+			dijalog.next();
 
-			if (!this->dijalog.isActive())
+			if (!dijalog.isActive())
 			{
-				this->player.player_normal();
+				player.player_normal();
 
 				if (activePatient)
 				{
@@ -158,8 +208,7 @@ void Game::update() {
 			}
 		}
 
-		text->setText(this->dijalog.getCurrentDijalog());
-		
+		text->setText(dijalog.getCurrentDijalog());
 		return;
 	}
 
@@ -169,7 +218,7 @@ void Game::update() {
 		{
 			if (patient.getBounds().contains(static_cast<sf::Vector2f>(mouse.getMousePos())))
 			{
-				patient.patient_talking();
+				//patient.patient_talking();
 				this->dijalog.start(patient.getDialog());
 				activePatient = &patient;
 				
@@ -177,10 +226,6 @@ void Game::update() {
 				patient.patient_talking();
 
 				text->setText(this->dijalog.getCurrentDijalog());
-				if (dijalog.getCurrentDijalog() == "What do you want to check?")
-				{
-					dijalog.enterChoice();
-				}
 				break;
 			}
 		}
@@ -223,11 +268,6 @@ void Game::render()
 		p.render(*this->window);
 	}
 
-	if (menuOpen)
-	{
-		this->window->draw(this->menuSprite);
-	}
-
 	if (this->dijalog.isActive())
 	{
 		this->textbox->draw(*this->window);
@@ -240,8 +280,23 @@ void Game::render()
 			//this->botun4->draw(*this->window);
 		}
 	}
-	
+
+	if (activeBox == 1)
+	{
+		this->window->draw(this->box1Sprite);
+	}
+	if (activeBox == 2)
+	{
+		this->window->draw(this->box2Sprite);
+	}
+
+	if (menuOpen)
+	{
+		this->window->draw(this->menuSprite);
+	}
+
 	this->player.render(*this->window);
+
 	//this->patient->render(*this->window);
 	//this->window->draw(this->pat);
 
