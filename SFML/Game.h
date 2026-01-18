@@ -15,12 +15,18 @@
 #include "Mouse.h"
 #include "Dijalog.h"
 #include "Botun.h"
+#include "DecisionTracker.h"
 #include <vector>
 using namespace std;
 /*
 Klasa koja se ponasa kao game engine
 */
-
+enum class GameState
+{
+	Playing,
+	GoodEnding,
+	BadEnding
+};
 class Game
 {
 private:
@@ -35,25 +41,34 @@ private:
 
 	//Mouse pozicija, click
 	Mouse mouse;
+	bool hoveringReport = false;
 
 	//Game objects
 	vector<Patient> patients;
+	int currentPatientIndex;
 	Player player;
 
 	//player menu(magazin)
-	sf::Sprite menuSprite;
-	sf::Texture menuTexture;
 	bool menuOpen = false;
+	vector<sf::Sprite> symptomSprites;
+	std::vector<sf::Texture> symptomTextures;
+
+	int currentSymptomIndex = 0;
+	bool symptomMenuOpen = false;
 
 	//textbox, text, font, botun
 	sf::Font font;
 	TextBox* textbox;
 	Text* text;
+
 	Botun* botun1;
 	Botun* botun2;
 	Botun* botun3;
 	Botun* botun4;
-	
+
+	Botun* reportBotun;
+	Botun* letGoBotun;
+	Botun* backBotun;
 	//slika s simptomima
 	int activeBox;
 
@@ -62,9 +77,22 @@ private:
 	sf::Sprite box1Sprite;
 	sf::Sprite box2Sprite;
 
+
 	//kad pricaju
 	Dijalog dijalog;
 	Patient* activePatient = nullptr;
+
+	//odluka, good i bad ending
+	DecisionTracker decisionTracker;
+	GameState gameState = GameState::Playing;
+	sf::Texture goodEndingTexture;
+	sf::Sprite goodEndingSprite;
+
+	sf::Texture badEndingTexture;
+	sf::Sprite badEndingSprite;
+
+	TextBox* endingTextBox = nullptr;
+	Text* endingText = nullptr;
 
 	void initVariables();
 	void initWindow();
@@ -73,13 +101,13 @@ private:
 	void initMenu();
 	void initTextBox();
 	void initBox();
+	void initEnding();
 public:
 	Game();
 	virtual ~Game();
 
 	bool running() const;
 
-	void updateMousePos();
 	void pollEvents();
 	void update();
 	void render();

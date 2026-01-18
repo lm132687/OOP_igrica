@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Botun.cpp" />
+    <ClCompile Include="DecisionTracker.cpp" />
     <ClCompile Include="Dijalog.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Botun.h" />
+    <ClInclude Include="DecisionTracker.h" />
     <ClInclude Include="Dijalog.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Mouse.h" />

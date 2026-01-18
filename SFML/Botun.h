@@ -9,8 +9,12 @@ private:
 	sf::Texture botunTexture_2;//dan 1
 	sf::Texture botunTexture_3;//dan 2
 	sf::Texture botunTexture_4;//dan 3
-	sf::Sprite botunSprite;
 	
+	sf::Texture botunReportTexture;
+	sf::Texture botunLetGoTexture;
+	sf::Texture botunBackTexture;
+
+	sf::Sprite botunSprite;
 public:
 	Botun();
 
@@ -21,6 +25,9 @@ public:
 	void mouth();
 	void skin();
 	void body();
+	void botunReport();
+	void botunLetGo();
+	void botunBack();
 	void draw(sf::RenderWindow& window);
 	bool isClicked(Mouse& mouse);
 	

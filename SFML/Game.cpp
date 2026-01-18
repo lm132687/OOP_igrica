@@ -7,6 +7,7 @@ void Game::initVariables()
 	this->text = nullptr;
 
 	activeBox = 0;//kad 0 onda je nista, 1 box1, 2 box2
+	currentPatientIndex = 0;
 }
 
 void Game::initWindow()
@@ -23,13 +24,109 @@ void Game::initWindow()
 
 void Game::initPatients()
 {
-	patients.emplace_back(10.f, 10.f);
+	patients.emplace_back("Patients/luka.png", "Patients/luka_talking.png", 481.f, 10.f); //Luka
+	patients.back().setInfection(InfectionStatus::Infected);
+	patients.back().setDialog({
+		"Luka: Just get it over with.",
+		"Player: What seems to be the problem?",
+		"Luka: Just came in for a check up.",
+		"Player: What do you want to check?"
+		});
+	patients.back().patient_normal();
+	
+
+	patients.emplace_back("Patients/kid.png", "Patients/kid_talking.png", 481.f, 10.f); //Toma
+	patients.back().setInfection(InfectionStatus::Healthy);
+	patients.back().setDialog({
+		"Kid: Hi! I'm Toma!",
+		"Player: Hi Toma! What seems to be the problem?",
+		"Toma: Oh my mom just said I needed a check up.",
+		"Player: What do you want to check?"
+		});
+	patients.back().patient_normal();
+
+	patients.emplace_back("Patients/jessica.png", "Patients/jessica_talking.png", 481.f, 10.f); //Jessica
+	patients.back().setInfection(InfectionStatus::Infected);
+	patients.back().setDialog({
+		"Jessica: Hi.",
+		"Player: What seems to be the problem?",
+		"Jessica: Well I saw some symptoms on TV",
+		"Jessica: ...and I'm not sure if it's the symptom or\n chili in my mouth.",
+		"Player: What?",
+		"Jessica: Ummm yeah I had a family dinner.",
+		"Player: Okay...",
+		"Player: What do you want to check?"
+		});
+	patients.back().patient_normal();
+	
+	patients.emplace_back("Patients/baka.png", "Patients/baka_talking.png", 481.f, 10.f); //Baka
+	patients.back().setInfection(InfectionStatus::Infected);
+	patients.back().setDialog({
+		"Granny: Hello.",
+		"Player: Hi, what seems to be the problem?",
+		"Granny: Well thy self simply arrived for a checkup.",
+		"Granny: Would thou love to have some\n tea and biscuits with me, after this?",
+		"Player No thank you granny...",
+		"Granny: Alas! A plague on both your houses.",
+		"Player: What do you want to check?"
+		});
+	patients.back().patient_normal();
+
+	patients.emplace_back("Patients/shy_lady.png", "Patients/shy_lady_talking.png", 481.f, 10.f); //Aurora
+	patients.back().setInfection(InfectionStatus::Healthy);
+	patients.back().setDialog({
+		"Aurora: Hi... I need your help...",
+		"Player: What seems to be the problem?",
+		"Aurora: I can't stop coughing...",
+		"Player: What do you want to check?"
+		});
+	patients.back().patient_normal();
+
+	//postavila sam pointer na prvog pacijenta
+	if (!patients.empty()){
+		activePatient = &patients[0];
+	}
+	//luka
+	patients[0].setBoxTextures(1, "boxes/luka_leg.png");
+	patients[0].setBoxTextures(2, "boxes/luka_moouth.png");
+	//toma
+	patients[1].setBoxTextures(1, "boxes/kid_bite.png");
+	patients[1].setBoxTextures(2, "boxes/kid_mouth.png");
+	//jessica
+	patients[2].setBoxTextures(1, "boxes/jessica_bite.png");
+	patients[2].setBoxTextures(2, "boxes/jessica_mouth.png");
+	//box3 i box4 za pacijente nakon 2. i 4.
+	patients[2].setBoxTextures(3, "boxes/jessica_body.png");
+	//baka
+	patients[3].setBoxTextures(1, "boxes/baka_bite.png");
+	patients[3].setBoxTextures(2, "boxes/baka_mouth.png");
+	patients[3].setBoxTextures(3, "boxes/baka_body.png");
+	//aurora
+	patients[4].setBoxTextures(1, "boxes/shy_girl_bite.png");
+	patients[4].setBoxTextures(2, "boxes/shy_girl_mouth.png");
+	patients[4].setBoxTextures(3, "boxes/shy_girl_body.png");
+	patients[4].setBoxTextures(4, "boxes/shy_girl_skin.png");
 }
 
 void Game::initMenu()
 {
-	this->menuTexture.loadFromFile("menu/menu_1simptom.png");
-	this->menuSprite.setTexture(this->menuTexture);
+	symptomTextures.resize(4);
+	symptomSprites.resize(4);
+
+	symptomTextures[0].loadFromFile("menu/menu_1simptom.png");
+	symptomTextures[1].loadFromFile("menu/menu_2_simptom.png");
+	symptomTextures[2].loadFromFile("menu/menu_3simptom.png");
+	symptomTextures[3].loadFromFile("menu/menu_4simptom.png");
+
+	for (int i = 0; i < 4; i++)
+	{
+		symptomSprites[i].setTexture(symptomTextures[i]);
+		symptomSprites[i].setPosition(8.f, 10.f);
+		symptomSprites[i].setScale(
+			800.f / symptomTextures[i].getSize().x,
+			600.f / symptomTextures[i].getSize().y
+		);
+	}
 }
 
 void Game::initTextBox()
@@ -49,33 +146,47 @@ void Game::initTextBox()
 	this->botun2 = new Botun();
 	this->botun2->mouth();
 	this->botun2->setPosition({ 480.f, 468.f });
-	/*
 	//dan2
 	this->botun3 = new Botun();
 	this->botun3->body();
-	this->botun3->setPosition({ 310.f, 528.f });
+	this->botun3->setPosition({ 310.f, 530.f });
 	//dan3
 	this->botun4 = new Botun();
 	this->botun4->skin();
-	this->botun4->setPosition({ 490.f, 528.f });
-	*/
+	this->botun4->setPosition({ 480.f, 530.f });
 }
 
 void Game::initBox()
 {
-	this->box1Texture.loadFromFile("boxes/luka_leg.png");
-	this->box1Sprite.setTexture(this->box1Texture);
-	this->box1Sprite.setPosition({ 70.f, 50.f });
+	reportBotun = new Botun();
+	reportBotun->botunReport();
+	reportBotun->setPosition({ 120.f, 250.f });
 
-	this->box2Texture.loadFromFile("boxes/luka_mouth.png");
-	this->box2Sprite.setTexture(this->box2Texture);
-	this->box2Sprite.setPosition(200.f, 100.f);
+	letGoBotun = new Botun();
+	letGoBotun->botunLetGo();
+	letGoBotun->setPosition({ 235.f, 250.f });
+
+	backBotun = new Botun();
+	backBotun->botunBack();
+	backBotun->setPosition({ 350.f, 250.f });
 }
 
 void Game::initBackground()
 {
 	this->backgroundTexture.loadFromFile("Background/hospital.png");
 	this->backgroundSprite.setTexture(this->backgroundTexture);
+}
+
+void Game::initEnding()
+{
+	goodEndingTexture.loadFromFile("Background/good_ending.png");
+	goodEndingSprite.setTexture(goodEndingTexture);
+
+	badEndingTexture.loadFromFile("Background/bad_ending.png");
+	badEndingSprite.setTexture(badEndingTexture);
+
+	endingText = new Text(this->font, 28);
+	endingText->setPosition({ 200.f, 420.f });
 }
 
 Game::Game()
@@ -86,28 +197,20 @@ Game::Game()
 	this->initPatients();
 	this->initTextBox();
 	this->initBox();
+	this->initMenu();
+	this->initEnding();
 }
 
 Game::~Game() {
 	delete this->text;
 	delete this->textbox;
 	delete this->window;
+	delete endingText;
 }
 
 bool Game::running() const
 {
 	return this->window->isOpen();
-}
-
-void Game::updateMousePos()
-{
-	/* 
-		Update-a mouse poziciju, prati poziciju misa samo unutar window-a (Vector2i)
-	*/
-	//refrence
-	//provjerit mouose poziciju jel iznad patienta i ako je u poll events provjerit is button pressed 
-	//da pokrene razgovor (inittalking())
-	
 }
 
 void Game::pollEvents()
@@ -123,37 +226,111 @@ void Game::pollEvents()
 			this->ev.key.code == sf::Keyboard::Escape)
 			this->window->close();
 
-		if (this->ev.type==sf::Event::KeyPressed && this->ev.key.code == sf::Keyboard::E)
+		if (ev.type == sf::Event::KeyPressed &&
+			ev.key.code == sf::Keyboard::E)
 		{
-			if (!menuOpen)
-			{
-				this->initMenu();
+			menuOpen = !menuOpen;
+			currentSymptomIndex = 0;
+
+			if (menuOpen)
 				player.player_menu();
-				menuOpen = true;
-			}
-			else {
+			else
 				player.player_normal();
-				menuOpen = false;
+		}
+
+		//navigacija
+		if (menuOpen && ev.type == sf::Event::KeyPressed)
+		{
+			if (ev.key.code == sf::Keyboard::Right &&
+				currentSymptomIndex < symptomSprites.size() - 1)
+			{
+				currentSymptomIndex++;
+			}
+			else if (ev.key.code == sf::Keyboard::Left &&
+				currentSymptomIndex > 0)
+			{
+				currentSymptomIndex--;
 			}
 		}
+		
 	}
 }
 
 void Game::update() {
-	//koristi nam za obradivanje input-a, pamcenje poz misa...
+
 	this->pollEvents();
+
+	if (gameState != GameState::Playing)
+		return;
 
 	this->mouse.update(*this->window);
 
 	if (activeBox != 0)
 	{
-		if (mouse.isLeftClicked())
+		if (reportBotun->isClicked(mouse))
 		{
+			decisionTracker.evaluate(
+				activePatient->isInfected(),
+				true
+			);
+
+			activePatient->report();
+			currentPatientIndex++;
+			if (currentPatientIndex < patients.size())
+				activePatient = &patients[currentPatientIndex];
+			else
+				activePatient = nullptr; //kraj svih pacijenata
+
+			activeBox = 0;
+			dijalog.stop();
+			return;
+		}
+		if (letGoBotun->isClicked(mouse))
+		{
+			decisionTracker.evaluate(
+				activePatient->isInfected(),
+				false
+			);
+
+			activePatient->report();
+			currentPatientIndex++;
+			if (currentPatientIndex < patients.size())
+			{ 
+				activePatient = &patients[currentPatientIndex];
+			}
+			else{
+				activePatient = nullptr;
+				if (decisionTracker.getWrong() == 0)
+				{
+					gameState = GameState::GoodEnding;
+					endingText->setText(
+						"You saved the city.\n"
+						"But for how long?"
+					);
+				}
+				else
+				{
+					gameState = GameState::BadEnding;
+					endingText->setText(
+						"Your actions have consequences.\n"
+						"The city is doomed."
+					);
+				}
+			}
+			activeBox = 0;
+			dijalog.stop();
+			return;
+		}
+		if (backBotun->isClicked(mouse))
+		{
+			if (activePatient)
+				activePatient->back();
+
 			activeBox = 0;
 		}
-
-		return;
+		return;//da bokliram sve ostalo
 	}
+
 
 	this->player.update(*this->window);
 	for (auto& p : this->patients)
@@ -161,77 +338,55 @@ void Game::update() {
 		p.update();
 	}
 
+	if (activePatient)
+		activePatient->update();
+
+	// dijalog
 	if (dijalog.isActive())
 	{
-		//aktivirati chocie na ovoj liniji
+		//pomocu ove recenice ulazi se u choice mode
 		if (dijalog.getCurrentDijalog() == "Player: What do you want to check?")
-		{
 			dijalog.enterChoice();
-		}
 
-		//choice mode
 		if (dijalog.isInChoice())
 		{
-			if (botun1->isClicked(mouse))
-			{
-				dijalog.leaveChoice();
-				activeBox = 1;;
-				return;
-			}
-			else if (botun2->isClicked(mouse))
-			{
-				dijalog.leaveChoice();
-				activeBox = 2;
-				return;
-			}
+			if (botun1->isClicked(mouse)) { dijalog.leaveChoice(); activeBox = 1; return; }
+			if (botun2->isClicked(mouse)) { dijalog.leaveChoice(); activeBox = 2; return; }
+			if (currentPatientIndex >= 2 && botun3->isClicked(mouse)) { dijalog.leaveChoice(); activeBox = 3; return; }
+			if (currentPatientIndex >= 4 && botun4->isClicked(mouse)) { dijalog.leaveChoice(); activeBox = 4; return; }
 
 			text->setText(dijalog.getCurrentDijalog());
 			return;
 		}
 
-		//normalni dijalog
 		if (mouse.isLeftClicked())
 		{
 			dijalog.next();
-
-			if (!dijalog.isActive())
+			if (!dijalog.isActive() && activePatient)
 			{
-				player.player_normal();
-
-				if (activePatient)
-				{
-					activePatient->patient_normal();
-					activePatient = nullptr;
-				}
-
-				return;
+				activePatient->patient_normal();
 			}
 		}
 
 		text->setText(dijalog.getCurrentDijalog());
 		return;
 	}
-
-	if (mouse.isLeftClicked())
+	
+	if (mouse.isLeftClicked() && activePatient)
 	{
-		for (auto& patient : this->patients)
+		if (activePatient->getBounds().contains(static_cast<sf::Vector2f>(mouse.getMousePos())))
 		{
-			if (patient.getBounds().contains(static_cast<sf::Vector2f>(mouse.getMousePos())))
-			{
-				//patient.patient_talking();
-				this->dijalog.start(patient.getDialog());
-				activePatient = &patient;
-				
-				player.player_talking();
-				patient.patient_talking();
-
-				text->setText(this->dijalog.getCurrentDijalog());
-				break;
-			}
+			dijalog.start(activePatient->getDialog());
+			player.player_talking();
+			activePatient->patient_talking();
+			text->setText(dijalog.getCurrentDijalog());
 		}
 	}
-
-
+	if (!dijalog.isActive() && activePatient)
+	{
+		activePatient->patient_normal();
+		player.player_normal();
+	}
 
 	/*
 	if (mouse.isLeftClicked())
@@ -263,10 +418,19 @@ void Game::render()
 	this->window->draw(this->backgroundSprite);
 	
 	//Ovdje cemo crtati
-	for (auto& p : this->patients)
+
+	//pacijent se crta samo kad je aktivan
+	if (activePatient && activePatient->isActive())
+		activePatient->render(*window);
+	/*
+	for (auto& p : patients)
 	{
-		p.render(*this->window);
-	}
+		if (p.isActive())
+		{
+			p.render(*window);
+		}
+	}*/
+
 
 	if (this->dijalog.isActive())
 	{
@@ -276,29 +440,40 @@ void Game::render()
 		{
 			this->botun1->draw(*this->window);
 			this->botun2->draw(*this->window);
-			//this->botun3->draw(*this->window);
-			//this->botun4->draw(*this->window);
+			if (currentPatientIndex >= 2) this->botun3->draw(*this->window); //nakon dva pacijenta
+			if (currentPatientIndex >= 4) this->botun4->draw(*this->window); //nakon četiri pacijenta
 		}
 	}
 
-	if (activeBox == 1)
+	if (activeBox >= 1 && activeBox <= 4)
 	{
-		this->window->draw(this->box1Sprite);
-	}
-	if (activeBox == 2)
-	{
-		this->window->draw(this->box2Sprite);
+		this->window->draw(activePatient->getBoxSprite(activeBox));
+
+		reportBotun->draw(*this->window);
+		letGoBotun->draw(*this->window);
+		backBotun->draw(*this->window);
 	}
 
 	if (menuOpen)
 	{
-		this->window->draw(this->menuSprite);
+		this->window->draw(symptomSprites[currentSymptomIndex]);
 	}
 
 	this->player.render(*this->window);
 
 	//this->patient->render(*this->window);
 	//this->window->draw(this->pat);
+
+	if (gameState == GameState::GoodEnding)
+	{
+		window->draw(goodEndingSprite);
+		endingText->draw(*window);
+	}
+	else if (gameState == GameState::BadEnding)
+	{
+		window->draw(badEndingSprite);
+		endingText->draw(*window);
+	}
 
 	this->window->display();
 }

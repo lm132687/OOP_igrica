@@ -6,6 +6,10 @@ Botun::Botun()
 	botunTexture_2.loadFromFile("boxes/botun_2.png");
 	botunTexture_3.loadFromFile("boxes/botun_3.png");
 	botunTexture_4.loadFromFile("boxes/botun_4.png");
+	
+	botunLetGoTexture.loadFromFile("boxes/botun_letgo.png");
+	botunReportTexture.loadFromFile("boxes/botun_report.png");
+	botunBackTexture.loadFromFile("boxes/botun_back.png");
 }
 
 void Botun::setPosition(const sf::Vector2f& pos)
@@ -48,6 +52,33 @@ void Botun::mouth()
 void Botun::body()
 {
 	this->botunSprite.setTexture(this->botunTexture_3);
+	this->botunSprite.setScale(
+		100.f / this->botunSprite.getTexture()->getSize().x,
+		50.f / this->botunSprite.getTexture()->getSize().y
+	);
+}
+
+void Botun::botunReport()
+{
+	this->botunSprite.setTexture(this->botunReportTexture);
+	this->botunSprite.setScale(
+		100.f / this->botunSprite.getTexture()->getSize().x,
+		50.f / this->botunSprite.getTexture()->getSize().y
+	);
+}
+
+void Botun::botunLetGo()
+{
+	this->botunSprite.setTexture(this->botunLetGoTexture);
+	this->botunSprite.setScale(
+		100.f / this->botunSprite.getTexture()->getSize().x,
+		50.f / this->botunSprite.getTexture()->getSize().y
+	);
+}
+
+void Botun::botunBack()
+{
+	this->botunSprite.setTexture(this->botunBackTexture);
 	this->botunSprite.setScale(
 		100.f / this->botunSprite.getTexture()->getSize().x,
 		50.f / this->botunSprite.getTexture()->getSize().y

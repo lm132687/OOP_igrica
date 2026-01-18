@@ -1,32 +1,29 @@
 #include "Patient.h"
+#include <iostream>
 
-Patient::Patient(float x, float y)
+Patient::Patient(const std::string& textureFile, const std::string& talkingTextureFile, float x, float y)
 {
-	this->patientTexture.loadFromFile("Patients/luka.png");
-	this->patient_talkingTexture.loadFromFile("Patients/luka_talking.png");
-	this->patientSprite.setTexture(this->patientTexture);
-	this->patientSprite.setPosition(481.f, 10.f);
-	this->patientSprite.setScale(280.f / patientTexture.getSize().x,
-		584.f / patientTexture.getSize().y);
+	if (!patientTexture.loadFromFile(textureFile))
+		std::cerr << "Failed to load texture: " << textureFile << std::endl;
+	if (!patient_talkingTexture.loadFromFile(talkingTextureFile))
+		std::cerr << "Failed to load texture: " << talkingTextureFile << std::endl;
 
-	dialogLines = {
-		"Luka: Just get it over with.",
-		"Player: What seems to be the problem?",
-		"Luka: Just came in for a check up. But hurry up I have\n things to do.",
-		"Player: Ok...",
-		"Player: What do you want to check?",
+	patientSprite.setTexture(patientTexture);
+	patientSprite.setPosition(x, y);
+	apply_scale();
 
-		"Aurora: Hi... I need your help...",
-		"Player: What seems to be the problem?",
-		"Aurora: I can't stop coughing...khkh..",
-		"Player: Ok, don't worry I will check  you.",
-		"Player: What do you want to check?",
-	};
+	active = true;     // pacijent je aktivan
+	result = PatientResult::None;
+	infection = InfectionStatus::Healthy; // default
 
+	dialogLines.clear();
 
 	//this->patientTexture.setOutlineColor(sf::Color::White);
 	//outline da se bolje vidi posto ce pozadina bit tamnija 
 }
+
+bool Patient::isActive() const { return active; }
+void Patient::deactivate() { active = false; }
 
 void Patient::update()
 {
@@ -53,6 +50,33 @@ void Patient::patient_normal()
 	
 }
 
+void Patient::report()
+{
+	result = PatientResult::Reported;
+	active = false;
+}
+
+void Patient::letGo()
+{
+	result = PatientResult::LetGo;
+	active = false;
+}
+
+void Patient::back()
+{
+	result = PatientResult::Back;
+}
+
+bool Patient::isInfected() const
+{
+	return infection == InfectionStatus::Infected;
+}
+
+PatientResult Patient::getResult() const
+{
+	return result;
+}
+
 void Patient::patient_talking()
 {
 	this->patientSprite.setTexture(this->patient_talkingTexture);
@@ -69,3 +93,43 @@ const vector<string>& Patient::getDialog() const
 	return dialogLines;
 }
 
+void Patient::setDialog(const vector<string>& lines)
+{
+	dialogLines = lines;
+}
+
+void Patient::setInfection(InfectionStatus status)
+{
+	infection = status;
+}
+
+void Patient::setBoxTextures(int boxIndex, const std::string& boxFile)
+{
+	switch (boxIndex) {
+	case 1: box1Texture.loadFromFile(boxFile); box1Sprite.setTexture(box1Texture); break;
+	case 2: box2Texture.loadFromFile(boxFile); box2Sprite.setTexture(box2Texture); break;
+	case 3: box3Texture.loadFromFile(boxFile); box3Sprite.setTexture(box3Texture); break;
+	case 4: box4Texture.loadFromFile(boxFile); box4Sprite.setTexture(box4Texture); break;
+	}
+	
+	box1Sprite.setPosition(70.f, 50.f);
+	box2Sprite.setPosition(70.f, 50.f);
+	box3Sprite.setPosition(70.f, 50.f);
+	box4Sprite.setPosition(70.f, 50.f);
+}
+
+
+void Patient::addSymptomBotun(const Botun& botun)
+{
+	symptomBotuns.push_back(botun);
+}
+
+Botun& Patient::getSymptomBotun(size_t index)
+{
+	return symptomBotuns.at(index);
+}
+
+size_t Patient::getSymptomCount() const
+{
+	return symptomBotuns.size();
+}
