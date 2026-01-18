@@ -14,10 +14,10 @@ Lana Marinović i Gabriela Tošić - Igrica sa kratkom pričom, spot the differe
 2. Instalirajte SFML 2.5+ (ili verziju koju projekt koristi).
    - Windows: možete koristiti prekompajliranu SFML biblioteku ili instalirati preko vcpkg.
    - Linux: "sudo apt install libsfml-dev"
+   - Za pokretanje SFML igrice na Linuxu, prvo je potrebno instalirati SFML biblioteke putem upravitelja paketa svoje distribucije (npr. sudo apt-get install libsfml-dev za Debian/Ubuntu), a zatim kompajlirati igru koristeći g++ uz povezivanje SFML biblioteka (npr. g++ SFML.cpp -o SFML -lsfml-graphics -lsfml-window -lsfml-system), što stvara izvršni file koji se pokreće iz terminala ./SFML
+   
 3. Otvorite projekt u vašem IDE-u (Visual Studio ili Code::Blocks):
    ```bash
    mkdir build
    cd build
-   cmake ..
-   make
    ./AreYouHuman
