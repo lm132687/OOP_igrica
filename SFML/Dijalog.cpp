@@ -26,13 +26,6 @@ void Dijalog::next()
     {
         stop();
     }
-    /*
-    string za_botun = "Player: What do you want to check?";
-    if (dijalog[dijalog_ind-1] == za_botun)
-    {
-        //int nesto za cuvanje dijalog_ind;
-        stop();
-    }*/
 }
 
 void Dijalog::stop()

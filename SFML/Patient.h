@@ -70,7 +70,7 @@ public:
 		case 2: return box2Sprite;
 		case 3: return box3Sprite; // novi box3
 		case 4: return box4Sprite; // novi box4
-		default: return box1Sprite; // fallback
+		default: return box1Sprite;
 		}
 	}
 	void setBoxTextures(int boxIndex, const std::string& boxFile);

@@ -5,8 +5,6 @@ Player::Player()
 	this->normalTexture.loadFromFile("Player/player.png");
 	this->talkingTexture.loadFromFile("Player/player_talking.png");
 	this->menuTexture.loadFromFile("Player/player_menu.png");
-	this->umTexture.loadFromFile("Player/player_um.png");
-	this->stressTexture.loadFromFile("Player/player_stress.png");
 
 	this->playerSprite.setTexture(this->normalTexture);
 
@@ -69,18 +67,6 @@ void Player::player_talking()
 void Player::player_menu()
 {
 	this->playerSprite.setTexture(this->menuTexture);
-	applyScale();
-}
-
-void Player::player_um()
-{
-	this->playerSprite.setTexture(this->umTexture);
-	applyScale();
-}
-
-void Player::player_stress()
-{
-	this->playerSprite.setTexture(this->stressTexture);
 	applyScale();
 }
 

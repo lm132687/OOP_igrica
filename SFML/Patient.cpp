@@ -12,14 +12,13 @@ Patient::Patient(const std::string& textureFile, const std::string& talkingTextu
 	patientSprite.setPosition(x, y);
 	apply_scale();
 
-	active = true;     // pacijent je aktivan
+	active = true;//pacijent je aktivan
 	result = PatientResult::None;
-	infection = InfectionStatus::Healthy; // default
+	infection = InfectionStatus::Healthy;
 
 	dialogLines.clear();
 
-	//this->patientTexture.setOutlineColor(sf::Color::White);
-	//outline da se bolje vidi posto ce pozadina bit tamnija 
+	
 }
 
 bool Patient::isActive() const { return active; }
